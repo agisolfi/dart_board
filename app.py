@@ -21,7 +21,7 @@ while running:
     current_screen.draw()
     next_screen = current_screen.next_screen()
     if next_screen:
-        current_screen = next_screen            
+        current_screen = next_screen
     pygame.display.flip()
 
 pygame.quit()

@@ -80,6 +80,7 @@ class PlayerSelect(Screen):
         self.button_1.draw(self.screen)
         self.button_2.draw(self.screen)
 
+
 class WinScreen(Screen):
     def __init__(self, screen, winner_index):
         super().__init__(screen)
@@ -88,13 +89,12 @@ class WinScreen(Screen):
         self.font_small = pygame.font.SysFont("Arial", 32)
 
         self.menu_button = Button(
-            rect=(400, 400, 300, 60),
-            text="Back to Menu",
-            on_click=self.back_to_menu
+            rect=(400, 400, 300, 60), text="Back to Menu", on_click=self.back_to_menu
         )
 
     def back_to_menu(self):
         from ui.screens import MainMenu
+
         self._next = MainMenu(self.screen)
 
     def handle_event(self, event):
@@ -104,9 +104,7 @@ class WinScreen(Screen):
         self.screen.fill((20, 20, 20))
 
         text = self.font_large.render(
-            f"Player {self.winner + 1} Wins!",
-            True,
-            (255, 215, 0)
+            f"Player {self.winner + 1} Wins!", True, (255, 215, 0)
         )
         self.screen.blit(text, text.get_rect(center=(640, 200)))
 

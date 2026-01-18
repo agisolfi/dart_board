@@ -3,17 +3,9 @@ from ui.screen_base import Screen
 from ui.widgets import Button
 import math
 
-DART_NUMBERS = [
-    20, 1, 18, 4, 13,
-    6, 10, 15, 2, 17,
-    3, 19, 7, 16, 8,
-    11, 14, 9, 12, 5
-]
+DART_NUMBERS = [20, 1, 18, 4, 13, 6, 10, 15, 2, 17, 3, 19, 7, 16, 8, 11, 14, 9, 12, 5]
 
-SLICE_COLORS = [
-    (20, 20, 20),     # black
-    (230, 230, 230)   # white
-]
+SLICE_COLORS = [(20, 20, 20), (230, 230, 230)]  # black  # white
 
 RED = (200, 0, 0)
 GREEN = (0, 160, 0)
@@ -27,21 +19,18 @@ class GameScreen(Screen):
         self.last_throw = None
         self.font_large = pygame.font.SysFont("Arial", 36)
         self.font_small = pygame.font.SysFont("Arial", 24)
-        self.impacts = []   # list of (x, y)
+        self.impacts = []  # list of (x, y)
         self.width, self.height = self.screen.get_size()
         self.board_center = (self.width * 0.4, self.height * 0.5)
         self.board_radius = int(min(self.width, self.height) * 0.4)
 
         self.next_button = Button(
-            rect=(724, 500, 200, 50),
-            text="Next Player",
-            on_click=self.next_player
+            rect=(724, 500, 200, 50), text="Next Player", on_click=self.next_player
         )
 
     def next_player(self):
-       self.current_player = (self.current_player + 1) % len(self.players)
-       self.last_throw = None
-
+        self.current_player = (self.current_player + 1) % len(self.players)
+        self.last_throw = None
 
     def draw_wedge(self, start_angle, end_angle, inner_r, outer_r, color):
         cx, cy = self.board_center
@@ -64,11 +53,9 @@ class GameScreen(Screen):
 
         pygame.draw.polygon(self.screen, color, points)
 
-
     def draw_ring(self, radius_frac, color, width=0):
         r = int(self.board_radius * radius_frac)
         pygame.draw.circle(self.screen, color, self.board_center, r, width)
-
 
     def handle_event(self, event):
         self.next_button.handle_event(event)
@@ -76,7 +63,6 @@ class GameScreen(Screen):
         # TEMP: simulate dart with spacebar
         if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
             self.simulate_throw()
-
 
     def simulate_throw(self):
         import random
@@ -96,10 +82,8 @@ class GameScreen(Screen):
         if self.players[self.current_player]["score"] <= 0:
             self._next = WinScreen(self.screen, self.current_player)
 
-
-
     def score_from_xy(self, x, y):
-        r = math.sqrt(x*x + y*y)
+        r = math.sqrt(x * x + y * y)
 
         if r > 1.0:
             return None  # Miss
@@ -124,12 +108,10 @@ class GameScreen(Screen):
         else:
             return base_score, 1
 
-
     def board_to_screen(self, x, y, center, radius):
-     sx = int(center[0] + x * radius)
-     sy = int(center[1] - y * radius)  # y inverted for screen coords
-     return sx, sy
-
+        sx = int(center[0] + x * radius)
+        sy = int(center[1] - y * radius)  # y inverted for screen coords
+        return sx, sy
 
     def draw(self):
         self.screen.fill((25, 25, 25))
@@ -143,18 +125,15 @@ class GameScreen(Screen):
         title = self.font_large.render("301 Game", True, (255, 255, 255))
         self.screen.blit(title, (20, 10))
 
-  
     def draw_board(self):
         width, height = self.screen.get_size()
-
 
         self.board_center = (int(width * 0.4), height // 2)
         self.board_radius = int(min(width, height) * 0.4)
 
-
         cx, cy = self.board_center
         R = self.board_radius
-    # Bullseyes
+        # Bullseyes
         pygame.draw.circle(self.screen, GREEN, self.board_center, int(R * 0.10))
         pygame.draw.circle(self.screen, RED, self.board_center, int(R * 0.05))
 
@@ -193,7 +172,7 @@ class GameScreen(Screen):
 
     def draw_info_panel(self):
         x = self.width - 300
-        y = self.height *0.05
+        y = self.height * 0.05
 
         for i, player in enumerate(self.players):
             color = (255, 255, 0) if i == self.current_player else (255, 0, 0)
@@ -205,8 +184,7 @@ class GameScreen(Screen):
 
         y += 20
         turn = self.font_small.render(
-            f"Current Turn: Player {self.current_player}",
-            True, (255, 255, 255)
+            f"Current Turn: Player {self.current_player}", True, (255, 255, 255)
         )
         self.screen.blit(turn, (x, y))
 
@@ -222,7 +200,6 @@ class GameScreen(Screen):
 
     def draw_footer(self):
         status = self.font_small.render(
-            "Status: Press SPACE to simulate throw",
-            True, (160, 160, 160)
+            "Status: Press SPACE to simulate throw", True, (160, 160, 160)
         )
         self.screen.blit(status, (20, 560))
