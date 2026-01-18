@@ -1,19 +1,11 @@
 import sounddevice as sd
 import numpy as np
 
-SAMPLE_RATE = 48000
-DURATION = 0.1  # seconds
+sd.default.device = 1  # Google VoiceHAT / I2S card
+sd.default.samplerate = 48000
+sd.default.channels = 1
 
-audio = sd.rec(
-    int(SAMPLE_RATE * DURATION),
-    samplerate=SAMPLE_RATE,
-    channels=2,   # stereo I2S
-    dtype='int32'
-)
+audio = sd.rec(int(0.5 * 48000), dtype='int32')
 sd.wait()
 
-left = audio[:, 0]
-right = audio[:, 1]
-
-print("Left peak:", np.max(np.abs(left)))
-print("Right peak:", np.max(np.abs(right)))
+print("Peak:", np.max(np.abs(audio)))
